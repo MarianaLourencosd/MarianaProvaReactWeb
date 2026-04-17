@@ -6,9 +6,13 @@ function Register({ setUser, setPage }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [msg, setMsg] = useState("");
+  const [sucesso, setSucesso] = useState(false);
 
   const cadastrar = async (e) => {
     e.preventDefault();
+
+    setMsg("");
+    setSucesso(false);
 
     if (!email || !senha) {
       setMsg("Preencha todos os campos");
@@ -16,15 +20,26 @@ function Register({ setUser, setPage }) {
     }
 
     if (senha.length < 6) {
-      setMsg("Senha deve ter pelo menos 6 caracteres");
+      setMsg("Senha muito fraca");
       return;
     }
 
     try {
       const res = await createUserWithEmailAndPassword(auth, email, senha);
+
       setUser(res.user);
+      setSucesso(true);
+      setMsg("Cadastro feito com sucesso");
     } catch (error) {
-      setMsg("Erro ao cadastrar (email inválido ou já existe)");
+      setSucesso(false);
+
+      if (error.code === "auth/email-already-in-use") {
+        setMsg("Usuário já existe");
+      } else if (error.code === "auth/invalid-email") {
+        setMsg("Email inválido");
+      } else {
+        setMsg("Erro ao criar conta");
+      }
     }
   };
 
@@ -40,10 +55,15 @@ function Register({ setUser, setPage }) {
 
           <h1>Cadastro</h1>
 
-          {msg && <p className="error-text">{msg}</p>}
+          {msg && (
+            <p className={sucesso ? "success-text" : "error-text"}>
+              {msg}
+            </p>
+          )}
 
           <form onSubmit={cadastrar}>
             <input
+              type="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}

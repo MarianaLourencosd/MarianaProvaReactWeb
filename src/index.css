@@ -73,7 +73,6 @@ h1 {
   font-size: 32px;
   color: #5b21b6;
   text-align: center;
-  letter-spacing: 0.5px;
 }
 
 p {
@@ -105,6 +104,17 @@ input:focus {
   box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12);
 }
 
+input.input-error {
+  border: 1px solid #dc2626 !important;
+  background: #fff1f2 !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+input.input-success {
+  border: 1px solid #16a34a !important;
+  background: #ecfdf5 !important;
+}
+
 button {
   width: 100%;
   padding: 14px;
@@ -115,7 +125,6 @@ button {
   font-weight: 600;
   cursor: pointer;
   transition: 0.25s;
-  letter-spacing: 0.3px;
 }
 
 button:hover {
@@ -124,7 +133,7 @@ button:hover {
 }
 
 button:disabled {
-  background: #c4b5fd;
+  opacity: 0.7;
   cursor: not-allowed;
   transform: none;
 }
@@ -148,15 +157,6 @@ li:hover {
   transform: translateY(-2px);
   background: #ede9fe;
   border-color: #ddd6fe;
-}
-
-footer {
-  margin-top: 20px;
-  text-align: center;
-  font-size: 13px;
-  font-weight: 600;
-  color: #6d28d9;
-  opacity: 0.9;
 }
 
 .auth-box {
@@ -192,6 +192,9 @@ footer {
   font-size: 13px;
   text-align: center;
   font-weight: 600;
+  background: #dcfce7;
+  padding: 10px;
+  border-radius: 10px;
 }
 
 .error-text {
@@ -199,6 +202,18 @@ footer {
   font-size: 13px;
   text-align: center;
   font-weight: 600;
+  background: #fee2e2;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6d28d9;
+  opacity: 0.9;
 }
 
 @media (max-width: 900px) {
@@ -223,4 +238,38 @@ footer {
   .panel {
     padding: 30px;
   }
+}
+
+input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid #e9d5ff;
+  background: #faf5ff;
+  transition: 0.25s;
+  font-size: 15px;
+}
+
+input:focus {
+  outline: none;
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12);
+}
+
+input:required:invalid {
+  border: 1px solid #dc2626;
+  background: #fff1f2;
+}
+
+input:required:valid {
+  border: 1px solid #16a34a;
+  background: #ecfdf5;
+}
+
+input:focus:invalid {
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.15);
+}
+
+input:focus:valid {
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.15);
 }

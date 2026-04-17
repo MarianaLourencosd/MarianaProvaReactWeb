@@ -6,9 +6,13 @@ function Login({ setUser, setPage }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [msg, setMsg] = useState("");
+  const [sucesso, setSucesso] = useState(false);
 
   const login = async (e) => {
     e.preventDefault();
+
+    setMsg("");
+    setSucesso(false);
 
     if (!email || !senha) {
       setMsg("Preencha todos os campos");
@@ -17,9 +21,20 @@ function Login({ setUser, setPage }) {
 
     try {
       const res = await signInWithEmailAndPassword(auth, email, senha);
+
       setUser(res.user);
+      setSucesso(true);
+      setMsg("Login feito com sucesso");
     } catch (error) {
-      setMsg("Login não encontrado ou senha incorreta");
+      setSucesso(false);
+
+      if (error.code === "auth/user-not-found") {
+        setMsg("Usuário não existe");
+      } else if (error.code === "auth/wrong-password") {
+        setMsg("Senha incorreta");
+      } else {
+        setMsg("Erro ao fazer login");
+      }
     }
   };
 
@@ -35,10 +50,15 @@ function Login({ setUser, setPage }) {
 
           <h1>Login</h1>
 
-          {msg && <p className="error-text">{msg}</p>}
+          {msg && (
+            <p className={sucesso ? "success-text" : "error-text"}>
+              {msg}
+            </p>
+          )}
 
           <form onSubmit={login}>
             <input
+              type="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
