@@ -1,9 +1,9 @@
 function Footer() {
   return (
-   <footer>
-    <p>Mariana Lourenço - {new Date().toLocaleString()}</p>
-   </footer>
-  )
+    <footer>
+      <p>Mariana Lourenço - {new Date().toLocaleString()}</p>
+    </footer>
+  );
 }
 
-export default Footer
+export default Footer;

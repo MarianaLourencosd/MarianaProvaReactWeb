@@ -1,23 +1,36 @@
 import { useState } from "react";
+import { db } from "../firebase";
+import { collection, addDoc } from "firebase/firestore";
 
-const ProdutoForm = ({ adicionarProduto }) => {
+function ProdutoForm() {
   const [nome, setNome] = useState("");
   const [preco, setPreco] = useState("");
+  const [msg, setMsg] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    adicionarProduto({ nome, preco });
+    if (!nome || !preco) {
+      setMsg("Preencha os campos");
+      return;
+    }
 
-    setNome("");
-    setPreco("");
+    try {
+      await addDoc(collection(db, "produtos"), { nome, preco });
+      setMsg("Produto cadastrado!");
+      setNome("");
+      setPreco("");
+    } catch {
+      setMsg("Erro ao salvar");
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
+      {msg && <p className="success-text">{msg}</p>}
+
       <input
-        type="text"
-        placeholder="Nome do produto"
+        placeholder="Nome"
         value={nome}
         onChange={(e) => setNome(e.target.value)}
       />
@@ -29,10 +42,9 @@ const ProdutoForm = ({ adicionarProduto }) => {
         onChange={(e) => setPreco(e.target.value)}
       />
 
-      <button type="submit">Adicionar Produto</button>
+      <button type="submit">Adicionar</button>
     </form>
   );
-};
+}
 
 export default ProdutoForm;
-
